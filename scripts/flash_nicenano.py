@@ -194,7 +194,10 @@ def main() -> int:
     if args.dry_run:
         return 0
 
-    shutil.copy2(firmware, destination)
+    # Use copyfile instead of copy2: UF2 drives can disappear immediately after
+    # flashing, and copy2's metadata step may fail with ENOENT even when flashing
+    # actually succeeded.
+    shutil.copyfile(firmware, destination)
     os.sync()
     print("Flash copy complete.")
     return 0

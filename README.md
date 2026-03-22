@@ -119,27 +119,34 @@ The build environment packages
 
 #### Flashing a nice!nano from local firmware artifacts
 
-After a build, UF2 files are stored in `firmware/`. Use the helper script:
+After a build, UF2 files are stored in `firmware/`.
+
+Use the `just` wrapper (delegates to `scripts/flash_nicenano.py`):
 
 ```bash
-./scripts/flash_nicenano.py left
-./scripts/flash_nicenano.py right
+just flash
 ```
+
+`just flash` defaults to `auto` side detection and `--wait 30`, so you can run
+it first, then put the board into bootloader mode.
 
 Optional flags:
 
 ```bash
 # choose mount path explicitly
-./scripts/flash_nicenano.py left --mount /run/media/$USER/NICENANO
+just flash left --mount /run/media/$USER/NICENANO
 
 # detect side from mounted INFO_UF2.TXT / CURRENT.UF2 markers when possible
-./scripts/flash_nicenano.py auto
+just flash auto
 
 # show what would happen without copying
-./scripts/flash_nicenano.py right --dry-run
+just flash right --dry-run
 
 # run first, then put board in bootloader within 30s
-./scripts/flash_nicenano.py left --wait 30
+just flash left --wait 30
+
+# direct script usage (equivalent)
+./scripts/flash_nicenano.py
 ```
 
 Notes on left/right detection:

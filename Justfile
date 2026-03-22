@@ -71,6 +71,10 @@ init:
 list:
     @just _parse_targets all | sed 's/,*$//' | sort | column
 
+# flash firmware to mounted nice!nano UF2 drive
+flash *args:
+    ./scripts/flash_nicenano.py {{ args }}
+
 # update west
 update:
     west update --fetch-opt=--filter=blob:none
