@@ -14,10 +14,10 @@
                  LT RT                                                         \
                  LM RM                                                         \
                  LB RB                                                         \
-        &kp LGUI LH RH &smart_mouse                                            \
+        &kp LALT LH RH &kp RALT                                                \
     )
 
-#include "zmk-helpers/key-labels/36.h"
+#include "zmk-helpers/key-labels/42.h"
 #include "base.keymap"
 
-/{ chosen { zmk,physical-layout = &foostan_corne_5col_layout; }; };
+/{ chosen { zmk,physical-layout = &foostan_corne_6col_layout; }; };
