@@ -9,6 +9,11 @@ draw := absolute_path('draw')
 # parse build.yaml and filter targets by expression
 _parse_targets $expr:
     #!/usr/bin/env bash
+    if ! command -v yq >/dev/null 2>&1; then
+        echo "Missing dependency: yq" >&2
+        echo "Hint: run 'direnv allow' in this repo (or install yq)." >&2
+        exit 127
+    fi
     attrs="[.board, .shield, .snippet, .\"artifact-name\"]"
     filter="(($attrs | map(. // [.]) | combinations), ((.include // {})[] | $attrs)) | join(\",\")"
     echo "$(yq -r "$filter" build.yaml | grep -v "^," | grep -i "${expr/#all/.*}")"
@@ -57,9 +62,23 @@ clean-nix:
 draw:
     #!/usr/bin/env bash
     set -euo pipefail
-    keymap -c "{{ draw }}/config.yaml" parse -z "{{ config }}/base.keymap" --virtual-layers Combos >"{{ draw }}/base.yaml"
-    yq -Yi '.combos.[].l = ["Combos"]' "{{ draw }}/base.yaml"
-    keymap -c "{{ draw }}/config.yaml" draw "{{ draw }}/base.yaml" -k "ferris/sweep" >"{{ draw }}/base.svg"
+    if ! command -v keymap >/dev/null 2>&1; then
+        echo "Missing dependency: keymap (keymap-drawer CLI)" >&2
+        echo "Hint: run 'direnv allow' in this repo (or install keymap-drawer)." >&2
+        exit 127
+    fi
+    if ! command -v yq >/dev/null 2>&1; then
+        echo "Missing dependency: yq" >&2
+        echo "Hint: run 'direnv allow' in this repo (or install yq)." >&2
+        exit 127
+    fi
+    keymap -c "{{ draw }}/config.yaml" parse -z "{{ config }}/corne.keymap" --virtual-layers Combos >"{{ draw }}/base.yaml"
+    if ! yq -e '.combos != null' "{{ draw }}/base.yaml" >/dev/null 2>&1; then
+        yq -Yi '.combos = []' "{{ draw }}/base.yaml"
+    else
+        yq -Yi '.combos.[].l = ["Combos"]' "{{ draw }}/base.yaml"
+    fi
+    keymap -c "{{ draw }}/config.yaml" draw "{{ draw }}/base.yaml" >"{{ draw }}/base.svg"
 
 # initialize west
 init:
