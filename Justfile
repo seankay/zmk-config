@@ -72,12 +72,8 @@ draw:
         echo "Hint: run 'direnv allow' in this repo (or install yq)." >&2
         exit 127
     fi
-    keymap -c "{{ draw }}/config.yaml" parse -z "{{ config }}/corne.keymap" --virtual-layers Combos >"{{ draw }}/base.yaml"
-    if ! yq -e '.combos != null' "{{ draw }}/base.yaml" >/dev/null 2>&1; then
-        yq -Yi '.combos = []' "{{ draw }}/base.yaml"
-    else
-        yq -Yi '.combos.[].l = ["Combos"]' "{{ draw }}/base.yaml"
-    fi
+    keymap -c "{{ draw }}/config.yaml" parse -z "{{ config }}/corne.keymap" >"{{ draw }}/base.yaml"
+    yq -Yi 'del(.layers.Mouse) | del(.layers.Combos) | .combos = (.combos // [])' "{{ draw }}/base.yaml"
     keymap -c "{{ draw }}/config.yaml" draw "{{ draw }}/base.yaml" >"{{ draw }}/base.svg"
 
 # initialize west
