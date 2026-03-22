@@ -117,6 +117,38 @@ The build environment packages
 [keymap-drawer](https://github.com/caksoylar/keymap-drawer). `just draw` parses
 `base.keymap` and draws it to `draw/base.svg`.
 
+#### Flashing a nice!nano from local firmware artifacts
+
+After a build, UF2 files are stored in `firmware/`. Use the helper script:
+
+```bash
+./scripts/flash_nicenano.py left
+./scripts/flash_nicenano.py right
+```
+
+Optional flags:
+
+```bash
+# choose mount path explicitly
+./scripts/flash_nicenano.py left --mount /run/media/$USER/NICENANO
+
+# detect side from mounted INFO_UF2.TXT / CURRENT.UF2 markers when possible
+./scripts/flash_nicenano.py auto
+
+# show what would happen without copying
+./scripts/flash_nicenano.py right --dry-run
+
+# run first, then put board in bootloader within 30s
+./scripts/flash_nicenano.py left --wait 30
+```
+
+Notes on left/right detection:
+
+- There is no universally reliable bootloader-only signal for "left vs right".
+- `auto` works only when the mounted device exposes markers (for example in `CURRENT.UF2`)
+  that contain strings like `corne_left` or `corne_right`.
+- If `auto` cannot determine side, pass `left` or `right` explicitly.
+
 #### Hacking the firmware
 
 To make changes to the ZMK source or any of the modules, simply edit the files
