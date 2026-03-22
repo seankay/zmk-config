@@ -1,0 +1,303 @@
+layout: {zmk_keyboard: corne, layout_name: foostan_corne_6col_layout}
+layers:
+  Base:
+  - Tab
+  - Q
+  - W
+  - E
+  - R
+  - T
+  - Y
+  - U
+  - I
+  - O
+  - P
+  - Del
+  - Esc
+  - {t: A, h: Gui}
+  - {t: S, h: Sym}
+  - {t: D, h: Shift}
+  - {t: F, h: Ctrl}
+  - G
+  - H
+  - {t: J, h: Ctrl}
+  - {t: K, h: Shift}
+  - {t: L, h: Sym}
+  - {t: SCLN, h: Gui}
+  - ''''
+  - {type: trans}
+  - Z
+  - X
+  - C
+  - V
+  - B
+  - N
+  - M
+  - ','
+  - .
+  - /
+  - {type: trans}
+  - Alt
+  - {t: Magic, h: Shift}
+  - {t: Numword, h: Num, s: Sticky Num}
+  - {t: Enter, h: Fn}
+  - {t: Spc, h: Nav, s: Spc}
+  - Alt
+  Nav:
+  - {type: trans}
+  - Alt+F4
+  - {type: trans}
+  - Prev Win
+  - Next Win
+  - {type: trans}
+  - PgUp
+  - {t: Bspc, h: Ctl+Bspc}
+  - {t: ↑, h: Ctl+Home}
+  - {t: Del, h: Ctl+Del}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {t: Gui, h: sticky}
+  - {t: Alt, h: sticky}
+  - {t: Shift, h: sticky}
+  - {t: Ctrl, h: sticky}
+  - {type: trans}
+  - {t: ←, h: Home}
+  - {t: ↓, h: Ctl+End}
+  - {t: ↑, h: Ctl+Home}
+  - {t: →, h: End}
+  - Enter
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - PgDn
+  - Tab
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {t: CANCEL, type: held}
+  - {type: trans}
+  Fn:
+  - {type: trans}
+  - F12
+  - F7
+  - F8
+  - F9
+  - {type: trans}
+  - {type: trans}
+  - $$mdi:volume-medium$$
+  - $$mdi:volume-off$$
+  - $$mdi:volume-high$$
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {t: F11, h: Gui}
+  - {t: F4, h: Alt}
+  - {t: F5, h: Shift}
+  - {t: F6, h: Ctrl}
+  - {type: trans}
+  - {type: trans}
+  - $$mdi:skip-backward$$
+  - $$mdi:play-pause$$
+  - $$mdi:skip-forward$$
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - F10
+  - F1
+  - F2
+  - F3
+  - {type: trans}
+  - {type: trans}
+  - BRI DN
+  - BRI UP
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {t: '$$mdi:volume-off$$', type: held}
+  - $$mdi:play-pause$$
+  - {type: trans}
+  Sym:
+  - {type: trans}
+  - '`'
+  - '~'
+  - '#'
+  - '&'
+  - '|'
+  - ^
+  - '{'
+  - '}'
+  - {t: '[', right: '{'}
+  - {t: ']', right: '}'}
+  - {type: trans}
+  - {type: trans}
+  - '!'
+  - {t: _, type: held}
+  - ':'
+  - '='
+  - $
+  - '@'
+  - (
+  - )
+  - _
+  - ;
+  - {type: trans}
+  - {type: trans}
+  - '%'
+  - '?'
+  - '*'
+  - +
+  - \
+  - /
+  - '-'
+  - <
+  - '>'
+  - '"'
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  Num:
+  - {type: trans}
+  - '1'
+  - '2'
+  - '3'
+  - '4'
+  - '5'
+  - '6'
+  - '7'
+  - '8'
+  - '9'
+  - '0'
+  - '-'
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - '='
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: held}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  Sys:
+  - {type: trans}
+  - BT 1
+  - BT 2
+  - BT 3
+  - BT 4
+  - BT CLR
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - Boot
+  - Boot
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - Reset
+  - Reset
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: held}
+  - {type: held}
+  - {type: trans}
+  - {type: trans}
+  Mouse:
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - PgUp
+  - Mouse ↑
+  - PgDn
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - Scroll ←
+  - Mouse ←
+  - Mouse ↓
+  - Mouse →
+  - Scroll →
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - Left Click
+  - Middle Click
+  - Right Click
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - {type: trans}
+  - Scroll ↑
+  - Scroll ↓
+  - {type: trans}

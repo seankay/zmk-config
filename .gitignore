@@ -1,2 +1,9 @@
-
-.zmk/
+.build
+.direnv
+.west
+modules
+firmware
+zephyr
+zmk
+draw/base.yaml
+__pycache__

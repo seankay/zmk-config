@@ -1,0 +1,32 @@
+/*
+ * Symbol layer draft for 6-column Corne.
+ *
+ * This file only defines reusable symbol-row macros so we can iterate on the
+ * layout without touching layer blocks yet.
+ */
+
+#pragma once
+
+#include <dt-bindings/zmk/keys.h>
+
+/*
+ * Requested symbol layout:
+ *
+ * ` ~ # & |    ^ { } [ ]
+ * ! _ : = $    @ ( ) _ ;
+ * % ? * + \    / - < > "
+ *
+ * This config is currently 6-column, so outer positions are transparent.
+ */
+
+#define SYM_TOP_LEFT   ___       &kp GRAVE &kp TILDE &kp HASH  &kp AMPS  &kp PIPE
+#define SYM_TOP_RIGHT  &kp CARET &kp LBRC  &kp RBRC  &kp LBKT  &kp RBKT  ___
+
+#define SYM_HOME_LEFT  ___       &kp EXCL  &kp UNDER &kp COLON &kp EQUAL &kp DLLR
+#define SYM_HOME_RIGHT &kp AT    &kp LPAR  &kp RPAR  &kp UNDER &kp SEMI  ___
+
+#define SYM_BOT_LEFT   ___       &kp PRCNT &kp QMARK &kp STAR  &kp PLUS  &kp BSLH
+#define SYM_BOT_RIGHT  &kp FSLH  &kp MINUS &kp LT    &kp GT    &kp DQT   ___
+
+#define SYM_THUMBS_LEFT  ___ ___
+#define SYM_THUMBS_RIGHT ___ ___
