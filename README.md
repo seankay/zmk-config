@@ -127,17 +127,21 @@ Use the `just` wrapper (delegates to `scripts/flash_nicenano.py`):
 just flash
 ```
 
-`just flash` defaults to `auto` side detection and `--wait 30`, so you can run
+`just flash` defaults to `left` and `--wait 30`, so you can run
 it first, then put the board into bootloader mode.
+
+If you run with `left`, the script automatically chains to `right` after the
+left flash completes (using the same wait timeout):
+
+```bash
+just flash left
+```
 
 Optional flags:
 
 ```bash
 # choose mount path explicitly
 just flash left --mount /run/media/$USER/NICENANO
-
-# detect side from mounted INFO_UF2.TXT / CURRENT.UF2 markers when possible
-just flash auto
 
 # show what would happen without copying
 just flash right --dry-run
@@ -149,12 +153,9 @@ just flash left --wait 30
 ./scripts/flash_nicenano.py
 ```
 
-Notes on left/right detection:
+Note:
 
-- There is no universally reliable bootloader-only signal for "left vs right".
-- `auto` works only when the mounted device exposes markers (for example in `CURRENT.UF2`)
-  that contain strings like `corne_left` or `corne_right`.
-- If `auto` cannot determine side, pass `left` or `right` explicitly.
+- Running `just flash left` auto-chains and flashes `right` next (same wait timeout).
 
 #### Hacking the firmware
 

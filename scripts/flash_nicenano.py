@@ -15,16 +15,6 @@ SIDE_TOKENS = {
     "right": ("right", "_right", "+right", "-right"),
 }
 
-LEFT_MARKERS = (
-    b"corne_left",
-    b"corne-left",
-)
-
-RIGHT_MARKERS = (
-    b"corne_right",
-    b"corne-right",
-)
-
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
@@ -33,9 +23,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "side",
         nargs="?",
-        default="auto",
-        choices=["left", "right", "auto"],
-        help="Which firmware side to flash (default: auto)",
+        default="left",
+        choices=["left", "right"],
+        help="Which firmware side to flash (default: left)",
     )
     parser.add_argument(
         "--firmware-dir",
@@ -63,12 +53,13 @@ def parse_args() -> argparse.Namespace:
 
 def find_uf2_mounts() -> list[Path]:
     mounts: list[Path] = []
+    seen: set[str] = set()
     with Path("/proc/mounts").open("r", encoding="utf-8") as handle:
         for line in handle:
             parts = line.split()
             if len(parts) < 2:
                 continue
-            mount = Path(parts[1])
+            mount = Path(parts[1].replace("\\040", " "))
             try:
                 has_info = (mount / "INFO_UF2.TXT").exists()
                 has_current = (mount / "CURRENT.UF2").exists()
@@ -76,32 +67,11 @@ def find_uf2_mounts() -> list[Path]:
                 continue
 
             if has_info or has_current:
-                mounts.append(mount)
+                key = str(mount)
+                if key not in seen:
+                    mounts.append(mount)
+                    seen.add(key)
     return mounts
-
-
-def read_binary(path: Path, max_bytes: int = 4 * 1024 * 1024) -> bytes:
-    try:
-        with path.open("rb") as handle:
-            return handle.read(max_bytes).lower()
-    except OSError:
-        return b""
-
-
-def detect_side_from_mount(mount: Path) -> str | None:
-    info_text = mount / "INFO_UF2.TXT"
-    info_blob = read_binary(info_text, max_bytes=32 * 1024)
-    current_blob = read_binary(mount / "CURRENT.UF2")
-    blob = info_blob + b"\n" + current_blob
-
-    has_left = any(marker in blob for marker in LEFT_MARKERS)
-    has_right = any(marker in blob for marker in RIGHT_MARKERS)
-
-    if has_left and not has_right:
-        return "left"
-    if has_right and not has_left:
-        return "right"
-    return None
 
 
 def firmware_candidates(firmware_dir: Path) -> list[Path]:
@@ -166,23 +136,17 @@ def resolve_mount(explicit_mount: str, wait_seconds: int) -> Path:
         time.sleep(0.5)
 
 
-def main() -> int:
-    args = parse_args()
+def wait_until_mount_removed(mount: Path, wait_seconds: int) -> bool:
+    deadline = time.time() + max(0, wait_seconds)
+    while time.time() <= deadline:
+        if not mount.exists():
+            return True
+        time.sleep(0.25)
+    return not mount.exists()
 
-    firmware_dir = Path(args.firmware_dir).expanduser().resolve()
-    mount = resolve_mount(args.mount, args.wait)
+
+def flash_side(side: str, firmware_dir: Path, mount: Path, dry_run: bool) -> None:
     files = firmware_candidates(firmware_dir)
-
-    side = args.side
-    if side == "auto":
-        detected_side = detect_side_from_mount(mount)
-        if not detected_side:
-            raise RuntimeError(
-                "Could not auto-detect left/right from mounted device. "
-                "Use 'left' or 'right' explicitly."
-            )
-        side = detected_side
-
     firmware = choose_firmware(files, side)
     destination = mount / firmware.name
 
@@ -191,8 +155,8 @@ def main() -> int:
     print(f"Firmware:   {firmware}")
     print(f"Copy to:    {destination}")
 
-    if args.dry_run:
-        return 0
+    if dry_run:
+        return
 
     # Use copyfile instead of copy2: UF2 drives can disappear immediately after
     # flashing, and copy2's metadata step may fail with ENOENT even when flashing
@@ -200,6 +164,27 @@ def main() -> int:
     shutil.copyfile(firmware, destination)
     os.sync()
     print("Flash copy complete.")
+
+
+def main() -> int:
+    args = parse_args()
+
+    firmware_dir = Path(args.firmware_dir).expanduser().resolve()
+    mount = resolve_mount(args.mount, args.wait)
+
+    flash_side(args.side, firmware_dir, mount, args.dry_run)
+
+    if args.side == "left":
+        if not args.dry_run:
+            print("\nLeft flashed. Waiting for that UF2 mount to disconnect...")
+            wait_until_mount_removed(mount, args.wait)
+        print(
+            "\nNow flash RIGHT: put right half in bootloader "
+            f"(waiting up to {max(0, args.wait)}s)..."
+        )
+        right_mount = resolve_mount(args.mount, args.wait)
+        flash_side("right", firmware_dir, right_mount, args.dry_run)
+
     return 0
 
 
