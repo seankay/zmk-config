@@ -18,7 +18,6 @@
 #define SYM 3
 #define NUM 4
 #define SYS 5
-#define MOUSE 6
 
 #define XXX &none
 #define ___ &trans
@@ -61,10 +60,8 @@
 MAKE_HRM(hml, &kp, &kp, KEYS_R THUMBS) // Left-hand HRMs.
 MAKE_HRM(hmr, &kp, &kp, KEYS_L THUMBS) // Right-hand HRMs.
 
-/* Leader key sequences, mouse settings */
+/* Additional layer definitions */
 
-#include "leader.dtsi"
-#include "mouse.dtsi"
 #include "symbols.dtsi"
 
 /* Nav cluster */
@@ -165,9 +162,6 @@ ZMK_MOD_MORPH(bs_del, bindings = <&kp BSPC>, <&kp DEL>;
 ZMK_TAP_DANCE(copy_cut, bindings = <&kp LC(INS)>, <&kp LC(X)>;
               tapping-term-ms = <200>;)
 
-// Sticky shift + leader.
-ZMK_MACRO(leader_sft, bindings = <&sk LSHFT &leader>;)
-
 // Misc aliases. [TODO: clean up]
 #define CANCEL    &kp K_CANCEL            // Cancel caps-word & auto-layers.
 #define DSK_PREV  &hmr LCTRL LG(LC(LEFT)) // Previous desktop.
@@ -260,18 +254,6 @@ ZMK_BASE_LAYER(Sys,
     ___           ___           ___           ___           ___           &sys_reset  ,   &sys_reset    ___           ___           ___           ___           ___         ,
 //╰─────────────┼─────────────┴─────────────┼─────────────┼─────────────┤ ├─────────────┼─────────────┼─────────────┴───────────────────────────╯
                                               ___           ___         ,   ___           ___
-//                                          ╰─────────────┴─────────────╯ ╰─────────────┴─────────────╯
-)
-
-ZMK_BASE_LAYER(Mouse,
-//╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮
-    ___           ___           ___           ___           ___           ___         ,   ___           &kp PG_UP     U_MS_U         &kp PG_DN    ___           ___         ,
-//├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
-    ___           ___           ___           ___           ___           ___         ,   U_WH_L        U_MS_L        U_MS_D         U_MS_R       U_WH_R        ___         ,
-//├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
-    ___           ___           ___           ___           ___           ___         ,   ___           &mkp LCLK     &mkp MCLK      &mkp RCLK    ___           ___         ,
-//╰─────────────┼─────────────┴─────────────┼─────────────┼─────────────┤ ├─────────────┼─────────────┼─────────────┴───────────────────────────╯
-                                              ___           ___         ,   U_WH_U        U_WH_D
 //                                          ╰─────────────┴─────────────╯ ╰─────────────┴─────────────╯
 )
 
