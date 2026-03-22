@@ -2,7 +2,7 @@
 
 Based on [urob's zmk config](https://github.com/urob/zmk-config/)
 
-[Keymap](./draw/base.svg)
+![keymap](./draw/base.svg)
 
 ## Local build environment
 
