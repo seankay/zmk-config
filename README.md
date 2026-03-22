@@ -2,6 +2,8 @@
 
 Based on [urob's zmk config](https://github.com/urob/zmk-config/)
 
+[Keymap](./draw/base.svg)
+
 ## Local build environment
 
 I streamline my local build process using `nix`, `direnv` and `just`. This
