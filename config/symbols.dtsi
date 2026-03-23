@@ -26,7 +26,7 @@
 #define SYM_HOME_RIGHT &kp AT    &kp LPAR  &kp RPAR  &kp UNDER &kp SEMI  ___
 
 #define SYM_BOT_LEFT   ___       &kp PRCNT &kp QMARK &kp STAR  &kp PLUS  &kp BSLH
-#define SYM_BOT_RIGHT  &kp FSLH  &kp MINUS &kp LT    &kp GT    &kp DQT   ___
+#define SYM_BOT_RIGHT  &kp FSLH  &kp MINUS &kp LT    &kp GT    &kp SQT   ___
 
 #define SYM_THUMBS_LEFT  ___ ___
 #define SYM_THUMBS_RIGHT ___ ___
