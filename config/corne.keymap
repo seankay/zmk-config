@@ -21,7 +21,7 @@
     ZMK_LAYER_WITH_OUTER(name, LT, RT, LM, RM, LB, RB, LH, RH, &trans, &trans)
 
 #define ZMK_DEF_LAYER(name, LT, RT, LM, RM, LB, RB, LH, RH)                    \
-    ZMK_LAYER_WITH_OUTER(name, LT, RT, LM, RM, LB, RB, LH, RH, &kp LALT, &kp RALT)
+    ZMK_LAYER_WITH_OUTER(name, LT, RT, LM, RM, LB, RB, LH, RH, &kp LALT, &kp ESC)
 
 #include "zmk-helpers/key-labels/42.h"
 #include "base.keymap"
