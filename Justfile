@@ -86,8 +86,80 @@ init:
 list:
     @just _parse_targets all | sed 's/,*$//' | sort | column
 
+# print 1 when rebuild is needed, 0 when up-to-date
+_needs_build expr:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    targets=$(just _parse_targets {{ expr }})
+    TARGETS="$targets" python - "{{ out }}" "{{ config }}" "{{ justfile_directory() }}/build.yaml" <<'PY'
+    from __future__ import annotations
+
+    import os
+    import sys
+    from pathlib import Path
+
+    out_dir = Path(sys.argv[1])
+    config_dir = Path(sys.argv[2])
+    build_yaml = Path(sys.argv[3])
+    target_lines = [line.strip() for line in os.environ.get("TARGETS", "").splitlines() if line.strip()]
+
+    if not target_lines:
+        print("No matching build targets found.", file=sys.stderr)
+        raise SystemExit(2)
+
+    input_files = [build_yaml]
+    input_files.extend(path for path in config_dir.rglob("*") if path.is_file())
+    latest_input_mtime = max(path.stat().st_mtime for path in input_files)
+
+    def artifact_name(board: str, shield: str, artifact: str) -> str:
+        if artifact:
+            return artifact
+        return f"{shield.replace(' ', '+') + '-' if shield else ''}{board}"
+
+    needs_build = False
+
+    for line in target_lines:
+        fields = line.split(",")
+        while len(fields) < 4:
+            fields.append("")
+        board, shield, _snippet, artifact = fields[:4]
+        name = artifact_name(board, shield, artifact)
+
+        uf2_path = out_dir / f"{name}.uf2"
+        bin_path = out_dir / f"{name}.bin"
+
+        if uf2_path.exists():
+            artifact_path = uf2_path
+        elif bin_path.exists():
+            artifact_path = bin_path
+        else:
+            print(f"Missing artifact: {name}", file=sys.stderr)
+            needs_build = True
+            break
+
+        if artifact_path.stat().st_mtime < latest_input_mtime:
+            print(
+                f"Stale artifact: {artifact_path.name} is older than config inputs",
+                file=sys.stderr,
+            )
+            needs_build = True
+            break
+
+    if needs_build:
+        print("1")
+    else:
+        print("Firmware artifacts are up-to-date; skipping build.", file=sys.stderr)
+        print("0")
+    PY
+
 # flash firmware to mounted nice!nano UF2 drive
 flash *args:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    needs_build=$(just _needs_build corne)
+    if [[ "$needs_build" == "1" ]]; then
+        just build corne
+    fi
     ./scripts/flash_nicenano.py {{ args }}
 
 # update west

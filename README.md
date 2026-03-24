@@ -119,23 +119,12 @@ The build environment packages
 
 #### Flashing a nice!nano from local firmware artifacts
 
-After a build, UF2 files are stored in `firmware/`.
-
-Use the `just` wrapper (delegates to `scripts/flash_nicenano.py`):
-
 ```bash
 just flash
 ```
 
-`just flash` defaults to `left` and `--wait 30`, so you can run
-it first, then put the board into bootloader mode.
-
-If you run with `left`, the script automatically chains to `right` after the
-left flash completes (using the same wait timeout):
-
-```bash
-just flash left
-```
+`just flash` checks whether Corne firmware artifacts are stale. If needed it
+builds first; otherwise it reuses the current files in `firmware/`.
 
 Optional flags:
 
@@ -155,27 +144,4 @@ just flash left --wait 30
 
 Note:
 
-- Running `just flash left` auto-chains and flashes `right` next (same wait timeout).
-
-#### Hacking the firmware
-
-To make changes to the ZMK source or any of the modules, simply edit the files
-or use `git` to pull in changes.
-
-To switch to any remote branches or tags, use `git fetch` inside a module
-directory to make the remote refs locally available. Then switch to the desired
-branch with `git checkout <branch>` as usual. You may also want to register
-additional remotes to work with or consider making them the default in
-`config/west.yml`.
-
-#### Updating the build environment
-
-To update the ZMK dependencies, use `just update`. This will pull in the latest
-version of ZMK and all modules specified in `config/west.yml`. Make sure to
-commit and push all local changes you have made to ZMK and the modules before
-running this command, as this will overwrite them.
-
-To upgrade the Zephyr SDK and Python build dependencies, use `just upgrade-sdk`. (Use with care --
-Running this will upgrade all Nix packages and may end up breaking the build environment. When in
-doubt, I recommend keeping the environment pinned to `flake.lock`, which is [continuously
-tested](https://github.com/urob/zmk-config/actions/workflows/test-build-env.yml) on all systems.)
+- Running `just flash left` auto-chains and flashes `right` next (same wait timeout of 30s).
