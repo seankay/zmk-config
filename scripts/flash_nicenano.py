@@ -170,6 +170,18 @@ def main() -> int:
     args = parse_args()
 
     firmware_dir = Path(args.firmware_dir).expanduser().resolve()
+
+    if args.mount:
+        print(
+            f"Waiting for UF2 mount path: {Path(args.mount).expanduser()} "
+            f"(up to {max(0, args.wait)}s)..."
+        )
+    else:
+        print(
+            f"Put {args.side.upper()} half in bootloader now "
+            f"(waiting up to {max(0, args.wait)}s for UF2 mount)..."
+        )
+
     mount = resolve_mount(args.mount, args.wait)
 
     flash_side(args.side, firmware_dir, mount, args.dry_run)
