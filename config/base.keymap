@@ -122,6 +122,9 @@ ZMK_ADAPTIVE_KEY(
 ZMK_TRI_STATE(swapper, bindings = <&kt LALT>, <&kp TAB>, <&kt LALT>;
               ignored-key-positions = <LT2 RT2 RM1 RM2 RM3>;)
 
+// Left-hand window switching helpers.
+#define WIN_GUI_TAB &kp LG(TAB) // OS task switcher (Gui+Tab).
+
 // Define mod-morph with a *single* mod trigger for less repetition.
 #define SIMPLE_MORPH(NAME, MOD, BINDING1, BINDING2)                            \
   ZMK_MOD_MORPH(NAME, mods = <(MOD_L##MOD | MOD_R##MOD)>;                      \
@@ -228,15 +231,15 @@ ZMK_BASE_LAYER(Sym,
 //                                          ╰─────────────┴─────────────╯ ╰─────────────┴─────────────╯
 )
 
-ZMK_BASE_LAYER(Num,
+ZMK_LAYER_WITH_OUTER(Num,
 //╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮
     ___           &kp N1        &kp N2        &kp N3         &kp N4        &kp N5      ,   &kp N6        &kp N7        &kp N8        &kp N9        &kp N0        ___         ,
 //├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
     ___           &sk LGUI      &sk LALT      &sk LSHFT      &sk LCTRL     ___         ,   &kp FSLH      &hmr LCTRL N4 &hmr RSHFT N5 &hmr LALT N6  &kp MINUS     ___         ,
 //├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
-    ___           ___           ___           ___            ___           &kp DOT     ,   &kp STAR      &kp N1        &kp N2        &kp N3        &kp PLUS      ___         ,
+    ___           ___           ___           ___            ___           WIN_GUI_TAB ,   &kp STAR      &kp N1        &kp N2        &kp N3        &kp PLUS      ___         ,
 //╰─────────────┼─────────────┴─────────────┼─────────────┼─────────────┤ ├─────────────┼─────────────┼─────────────┴───────────────────────────╯
-                                              ___           ___         ,   ___           &kp N0
+                                              ___           ___         ,   ___           &kp N0       ,   ___         ,   &kp DOT
 //                                          ╰─────────────┴─────────────╯ ╰─────────────┴─────────────╯
 )
 
