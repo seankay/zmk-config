@@ -1,7 +1,5 @@
 # ZMK config
 
-Based on [urob's zmk config](https://github.com/urob/zmk-config/)
-
 ![keymap](./draw/base.svg)
 
 ## Local build environment
