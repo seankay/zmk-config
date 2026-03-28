@@ -72,6 +72,29 @@ ZMK_HOLD_TAP(mt_end, bindings = <&masked_end>, <&kp>; MT_CORE)
 MASK_MODS(masked_home, (MOD_LCTL), &kp HOME)
 MASK_MODS(masked_end,  (MOD_LCTL), &kp END)
 
+/* Auto-shift */
+
+// Tap: repeat after alpha, else sticky-shift |
+// Shift + tap/ double-tap: caps-word | Hold: shift.
+#define AUTO_SHIFT_L &auto_shift LSHFT 0
+#define AUTO_SHIFT_R &auto_shift RSHFT 0
+ZMK_HOLD_TAP(auto_shift, bindings = <&kp>, <&auto_shift_tap>;
+             flavor = "balanced"; tapping-term-ms = <200>;
+             quick-tap-ms = <QUICK_TAP_MS>;)
+ZMK_MOD_MORPH(auto_shift_tap, bindings = <&shift_repeat>, <&caps_word>;
+              mods = <(MOD_LSFT | MOD_RSFT)>;)
+ZMK_ADAPTIVE_KEY(
+    shift_repeat, bindings = <&sk LSHFT>;
+    repeat {
+      trigger-keys = <A B C D E F G H I J K L M N O P Q R S T U V W X Y Z>;
+      bindings = <&key_repeat>;
+      max-prior-idle-ms = <1200>;
+      strict-modifiers;
+    };)
+&caps_word {
+  /delete-property/ ignore-modifiers;
+};
+
 /* Auto-layers */
 
 // Hold-only: momentary num layer.
@@ -150,7 +173,7 @@ ZMK_DEF_LAYER(Base,
 //├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
     &kp ESC       &kp A         &lt SYM S       &kp D         &kp F         &kp G       ,   &kp H         &kp J         &kp K         &lt SYM L       &kp SCLN      &kp SQT     ,
 //├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
-    &kp LSHFT     &kp Z         &kp X         &kp C         &kp V         &kp B       ,   &kp N         &kp M         &kp COMMA     &kp DOT       &kp FSLH      &kp RSHFT   ,
+    AUTO_SHIFT_L  &kp Z         &kp X         &kp C         &kp V         &kp B       ,   &kp N         &kp M         &kp COMMA     &kp DOT       &kp FSLH      AUTO_SHIFT_R,
 //╰─────────────┼─────────────┴─────────────┼─────────────┼─────────────┤ ├─────────────┼─────────────┼─────────────┴───────────────────────────╯
                                               SMART_NUM     &kp LCTRL   ,   &lt FN RET    &lt_spc NAV 0
 //                                          ╰─────────────┴─────────────╯ ╰─────────────┴─────────────╯
