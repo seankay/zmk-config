@@ -1,6 +1,6 @@
 # ZMK config
 
-Based on [urob's zmk config](https://github.com/urob/zmk-config/)
+Based on [urob's zmk config](https://github.com/urob/zmk-config/) and [ShelZuuz’s symbol layer](https://getreuer.info/posts/keyboards/symbol-layer/index.html#shelzuuzs-symbol-layer).
 
 ![keymap](./draw/base.svg)
 
